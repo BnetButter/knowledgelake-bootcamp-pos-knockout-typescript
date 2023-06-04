@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Two Panes</title>
+    <script src="/node_modules/knockout/build/output/knockout-latest.js"> 
+    </script>
+    <link type="text/css" rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+    <div class="left">
+        <div class="button-bar" data-bind="foreach: types">
+            <button data-bind="text:name,click: onclick"></button>
+        </div>
+        <div data-bind="foreach: types">
+            <div data-bind="visible: selectedType">
+                <div class="viewport" data-bind="foreach:items">
+                    <button data-bind="text:name, click: addItemToCart"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div data-bind="foreach: shoppingCart" class="viewport">
+            <div class="ShoppingCart">
+                <div class="item">
+                    <span class="item-name" data-bind="html:displayName">Item Name</span>
+                </div>
+                <div class="details">
+                    <span class="price" data-bind="text: displayPrice()"></span>
+                    <div class="actions">
+                        <button data-bind="click:ondelete">Delete</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="checkout">
+            <div class="total">
+                <form>
+                    <label for="subtotal">Subtotal:</label>
+                    <input type="text" id="subtotal" name="subtotal" data-bind="textInput: totalSurcharge()" readonly>
+                    <label for="tax">Tax:</label>
+                    <input type="text" id="tax" name="tax" readonly>
+                    <label for="total">Total:</label>
+                    <input type="text" id="total" name="total" readonly>
+                </form>
+            </div>
+            <button class="done">Done</button>
+        </div>
+    </div>
+
+    <div class="modal" data-bind="visible: modalModel().showModal">
+        <div class="modal-content">
+            <form id="form1">
+                <div class="checkbox-viewport">
+                    <div class="checkbox-grid" data-bind="foreach: modalModel().modalOptions">
+                        <div>
+                            <input type="checkbox" data-bind="checked: selected "/>
+                            <label data-bind="text: name"></label>
+                        </div>
+                      <!-- Add more checkboxes as needed -->
+                    </div>
+                  </div>
+                <div class="modal-buttons">
+                    <input type="button" value="Done" data-bind="click: modalModel().onComplete()">
+                    <input type="button" value="Cancel" class="cancel" data-bind="click: modalModel().onCancel">
+                </div>
+            </form>
+        </div>  
+    </div>
+</body>
+<script type="module" src="/src/index.ts"></script>
+</html>
